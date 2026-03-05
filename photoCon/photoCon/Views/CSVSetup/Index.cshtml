@@ -1,0 +1,67 @@
+﻿<br>
+<h1>Upload CSV File</h1>
+
+<hr />
+<br>
+<h6 style="font-style: italic">
+    Uploading CSV file containing of photo title, description, location and date taken.
+</h6>
+
+<form>
+    @Html.AntiForgeryToken()
+    <div class="col-md-3">
+
+        <br>
+        <input class="border form-control" type="file" name="file" id="fileInput" />
+        <br>
+        <input type="button" class="btn btn-primary form-control" id="uploadButton" value="Upload" />
+        &nbsp;
+        @* <input type="button" class="btn btn-primary form-control" id="UpdateButton" value="Synch Data" /> *@
+    </div>
+</form>
+
+
+
+
+
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                <!-- Error messages will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Completed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="successModalBody">
+                <!-- success messages will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/js/CSVSetup/_csvsetup_index.js">
+</script>

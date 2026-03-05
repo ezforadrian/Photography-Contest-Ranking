@@ -1,0 +1,29 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h2>Select Judge to Score:</h2>
+            <form method="post" action="@Url.Action("ValidateJudgeId", "JudgeGrandFinal")">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label for="judgeSelect" class="form-label">Judge Name:</label>
+                    <select class="form-select" id="judgeSelect" name="judgeId">
+                        @foreach (var judge in Model)
+                        {
+                            <option value="@judge.Id">@($"{judge.LastName}, {judge.FirstName} {judge.MiddleName}")</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    
+</div>
+

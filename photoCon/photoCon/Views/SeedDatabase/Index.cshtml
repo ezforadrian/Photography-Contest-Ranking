@@ -1,0 +1,197 @@
+﻿@using photoCon.Dto
+@using photoCon.Helper
+@model IEnumerable<SeedInfo>
+
+@{
+    SanitizedParam sanitizedParam = new SanitizedParam();
+
+    var regionName_ = "";
+    var count = Model.Count();
+    var i = 0;
+    var trId = "r";
+    var catnameId = "c";
+    var dbCountId = "d";
+    var folCount = "f";
+    var lastUp = "h";
+    var act = "a";
+    var btnSeed = "b";
+
+    var sanitizedCatId = "";
+
+
+}
+<div class="container-fluid text-center">
+<h6 class="text-start" style="color: red;"><i>Note: Populating image data into the database might take some time. Please be patient while it completes.</i></h6>
+<br />
+<div class="row">
+        
+
+
+@{
+    foreach (var seedInfo in Model)
+    {
+
+        trId = trId + sanitizedParam.RemoveSpecialCharacters(seedInfo.RegionIdHash);
+
+        sanitizedCatId = sanitizedParam.RemoveSpecialCharacters(seedInfo.CategoryIdHash);
+        catnameId = catnameId + sanitizedCatId;
+        dbCountId = dbCountId + sanitizedCatId;
+        folCount = folCount + sanitizedCatId;
+        lastUp = lastUp + sanitizedCatId;
+        act = act + sanitizedCatId;
+        btnSeed = btnSeed + sanitizedCatId;
+
+
+        if (regionName_ != seedInfo.RegionName)
+        {
+            if (regionName_ != "")
+            {
+                @: </table>
+                <hr />
+                @: </div>
+                
+            }
+
+            regionName_ = seedInfo.RegionName;
+
+
+           @: <div style="border: 1px solid gray;" class="col-6">
+           <h4 class="text-start"  >Region Name: @seedInfo.RegionName</h4>
+           <hr />
+           @: <table class="table table-striped table-fixed ">
+               @: <thead>
+                   @: <tr>
+                        @: <th style="width: 20%;">Category Name</th>
+                        @: <th style="width: 20%;">Image Count (Database)</th>
+                        @: <th style="width: 20%;">Image Count (Folder)</th>
+                        @: <th style="width: 20%;">Last Update</th>
+                        @: <th style="width: 20%;">Action</th>
+                
+                   @: </tr>
+                @: </thead>
+           @: <tr id="@trId">
+                @: <td class="align-middle" id="@catnameId"> @seedInfo.CategoryName </td>
+                @: <td class="align-middle" id="@dbCountId"> @seedInfo.DBCountPerRegionandCategory </td>
+                @: <td class="align-middle" id="@folCount"> @seedInfo.FolderCountPerRegionandCategory </td>
+                @: <td class="align-middle" id="@lastUp">
+                if (seedInfo.LastSeededOn == DateTime.MinValue)
+                {
+                    @: No History of Upload
+                }
+                else
+                {
+                    @seedInfo.LastSeededOn 
+                }
+                @: </td>
+                @: <td style="height: 90px; min-height: 90px;" class="align-middle" id="@act">
+                    if (seedInfo.FolderCountPerRegionandCategory > seedInfo.DBCountPerRegionandCategory)
+                    {
+                        @: <button class="btn btn-primary btn-sm seedButton" id="@btnSeed" data-region-id="@seedInfo.RegionIdHash" data-category-id="@seedInfo.CategoryIdHash">Seed DB</button>
+                    }
+                    if (seedInfo.FolderCountPerRegionandCategory == seedInfo.DBCountPerRegionandCategory)
+                    {
+                        if (seedInfo.FolderCountPerRegionandCategory == 0 && seedInfo.DBCountPerRegionandCategory == 0)
+                        {
+                           @: Unavailable
+                        }
+                        else
+                        { 
+                           @: Completed
+                        }
+
+                    }
+                @: </td>
+           @: </tr>
+        }
+        else
+        {
+           @: <tr id="@trId">
+                @: <td class="align-middle" id="@catnameId"> @seedInfo.CategoryName </td>
+                @: <td class="align-middle" id="@dbCountId"> @seedInfo.DBCountPerRegionandCategory </td>
+                @: <td class="align-middle" id="@folCount"> @seedInfo.FolderCountPerRegionandCategory </td>
+                @: <td class="align-middle" id="@lastUp">
+                if (seedInfo.LastSeededOn == DateTime.MinValue)
+                {
+                    @: No History of Upload
+                }
+                else
+                {
+                    @seedInfo.LastSeededOn 
+                }
+                @: </td>
+                @: <td style="height: 90px; min-height: 90px;" class="align-middle" id="@act">
+
+                    if (seedInfo.FolderCountPerRegionandCategory > seedInfo.DBCountPerRegionandCategory)
+                    {
+                        @: <button class="btn btn-primary btn-sm seedButton" id="@btnSeed" data-region-id="@seedInfo.RegionIdHash" data-category-id="@seedInfo.CategoryIdHash">Seed DB</button>
+                    }
+                    if (seedInfo.FolderCountPerRegionandCategory == seedInfo.DBCountPerRegionandCategory)
+                    {
+                        if (seedInfo.FolderCountPerRegionandCategory == 0 && seedInfo.DBCountPerRegionandCategory == 0)
+                        {
+                           @: Unavailable
+                        }
+                        else
+                        { 
+                           @: Completed
+                        }
+
+                    }
+                @: </td>
+           @: </tr>
+
+            if (i == count - 1)
+            {
+                @: </table>
+                <hr />
+                @: </div> 
+            }
+        
+        }
+
+     
+        regionName_ = seedInfo.RegionName;
+        i++;
+
+        trId = "r";
+        catnameId = "c";
+        dbCountId = "d";
+        folCount = "f";
+        lastUp = "h";
+        act = "a";
+        btnSeed = "b";
+
+
+
+    }
+
+}
+
+
+    
+
+</div>       
+           
+
+        
+
+        
+  
+
+
+    
+
+
+@*<button class="btn btn-primary" id="btnSeedData">
+    SeedData
+</button>*@
+
+<!-- CSRF token input -->
+<input type="hidden" id="csrf-token" value="@ViewData["CSRFToken"]">
+
+<!-- Container to display metadata -->
+<div id="metadataContainer"></div>
+
+</div>  
+
+<script src="~/js/SeedDatabase/_seeddatabase_index.js"></script>

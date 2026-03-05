@@ -1,0 +1,217 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+
+
+}
+<link rel="stylesheet" href="~/css/rankOverall.css" asp-append-version="true" />
+
+<div class="album py-3">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <label class="display-6">Region</label>
+                <select class="form-select form-select-lg mb-3" id="x_reg">
+                    @{
+                        foreach (var reg in Model.regionList)
+                        {
+                            if (ViewBag.RegionId == reg.RegionId)
+                            {
+                                            <option selected value="@localEncryption.ANEncrypt(reg.RegionId.ToString(), key)">@reg.RegionName</option>
+                            }
+                            else
+                            {
+                                            <option value="@localEncryption.ANEncrypt(reg.RegionId.ToString(), key)">@reg.RegionName</option>
+                            }
+
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="display-6">Category</label>
+                <select class="form-select form-select-lg mb-3" id="x_cat">
+                    @{
+                        foreach (var cat in Model.categoryList)
+                        {
+                            if (ViewBag.CategoryId == cat.CategoryId)
+                            {
+                                            <option selected value="@localEncryption.ANEncrypt(cat.CategoryId.ToString(), key)">@cat.CategoryName</option>
+                            }
+                            else
+                            {
+                                            <option value="@localEncryption.ANEncrypt(cat.CategoryId.ToString(), key)">@cat.CategoryName</option>
+                            }
+
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="display-6">Display</label>
+                <select class="form-select form-select-lg mb-3" id="x_top">
+                    @foreach (var opt in Model.topOptions)
+                    {
+                        var encryptedOpt = localEncryption.ANEncrypt(opt.ToString(), key);
+                        var isSelected = ViewBag.Top == opt ? true : false;
+                        var displayText = opt == 10000 ? "All" : $"Top {opt}";
+
+                        <option value="@encryptedOpt" selected="@isSelected">@displayText</option>
+                    }
+                </select>
+
+
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-5">
+            @foreach (var item in Model.result_)
+            {
+                <div class="col">
+                    <div class="card shadow-md">
+                        <!-- Lazy loading for images -->
+                        <!-- Lazy loading for images -->
+                        <img 
+                                width="100%" 
+                                height="240" 
+                                src="~/css/images/placeholder.png" 
+                                data-src="@item.ImageUrl" 
+                                class="lazy-load"
+                                onclick="openModalFS('@item.ImageUrl', '@item.HashPhotoId', '@item.AverageScore', '@item.Rank', '@item.RegionName', '@item.CategoryName')" />
+                        <div class="spinner"></div> <!-- Loading spinner -->
+                        <div class="card-body" style="font-size: 10px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong style="font-size:20px; color: red;">
+                                        
+                                        @{
+                                            if (@item.Unranked)
+                                            {
+                                                            <strong id="imgRank">
+                                                    Rank:   ---
+                                                            </strong>
+                                            }
+                                            else
+                                            {
+                                                            <strong id="imgRank">
+                                                    Rank:  @item.Rank
+                                                            </strong>
+                                            }
+                                        }
+                                    </strong>
+                                </div>
+                                <div class="col-6">
+                                    <strong style="font-size:23px;">
+                                        @{
+                                            if (@item.Unranked)
+                                            {
+                                                            <strong id="imgScore">
+                                                                Score: ---
+                                                            </strong>
+                                            }
+                                            else
+                                            {
+                                                            <strong id="imgScore">
+                                                                Score: @item.AverageScore
+                                                            </strong>
+                                            }
+                                        }
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong style="font-size:18px;" id="imgRegionName">
+                                        @item.RegionName
+                                    </strong>
+                                </div>
+                                <div class="col-6">
+                                    <strong style="font-size:18px;" id="imgCategoryName">
+                                        @item.CategoryName
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="imageFullModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageFullModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="imageFullModalLabel"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+ 
+                    <div class="row">
+                        @* <div class="col-2"></div> *@
+                        <div class="col-12">
+                        <center>
+                            <img width="95%"
+                             height="755"
+                             src="~/css/images/placeholder.png"
+                                 id="ImageModal" />
+                        </center>
+                        </div>
+                        @* <div class="col-2"></div> *@
+                    </div>
+                    
+                    
+                    <div class="card-body" style="font-size: 10px;">
+                        <div class="row">
+                            @* <div class="col-3"></div> *@
+                            <div class="col-6">
+                                <strong style="font-size:20px;">
+                                    Rank:
+                                        <strong id="imgRankMModal">
+                                            ---
+                                        </strong>
+                                </strong>
+                            </div>
+                            <div class="col-6">
+                                <strong style="font-size:23px;">
+                                    Score:
+                                        <strong id="imgScoreModal">
+                                            ---
+                                        </strong>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+       
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Rank/_rank_rank_overall.js"></script>
+<script src="~/js/Rank/_rank_overall.js"></script>
+

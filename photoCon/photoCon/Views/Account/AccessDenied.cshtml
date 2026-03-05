@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "_LayoutWithoutMenu";
+    ViewData["Title"] = "Access Denied";
+}
+<div class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+        <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100"><use xlink:href="#bootstrap" /></svg>
+        <h1 class="text-body-emphasis">Access Denied</h1>
+        <p class="col-lg-8 mx-auto fs-5 text-muted">
+            Please try to login again.
+        </p>
+        <div class="d-inline-flex gap-2 mb-5">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">
+            <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
+                Click here to redirect to Login Page
+            </button>
+            </a>
+            
+        </div>
+    </div>
+</div>

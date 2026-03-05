@@ -1,0 +1,230 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+    var color = "black";
+
+}
+<link rel="stylesheet" href="~/css/rankOverall.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/glightbox/glightbox.min.css">
+<script src="~/js/Glightbox/glightbox.min.js"></script>
+
+<div class="album py-3">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <label class="display-6">Date</label>
+                <select class="form-select form-select-lg mb-3" id="x_date">
+                    @{
+                        foreach (var date in Model.dateList)
+                        {
+                            DateTime dateValue;
+                            DateTime.TryParseExact(@date.ParameterValue, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue);
+                            string formattedDate = dateValue.ToString("MM/dd/yyyy");
+
+                            if (ViewBag.PrelimDates == date.Index)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(date.Index.ToString(), key)">
+                                    Day
+                                    @date.Filler01 
+                                    -
+                                    @formattedDate
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(date.Index.ToString(), key)">
+
+                                    Day
+                                    @date.Filler01
+                                    -
+                                    @formattedDate
+                                </option>
+                            }
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <label class="display-6">Round</label>
+                <select class="form-select form-select-lg mb-3" id="x_round">
+                    @{
+                        foreach (var round in Model.roundList)
+                        {
+                            
+
+
+                            if (ViewBag.RoundIndex == round.Index)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(round.Index.ToString().Trim(), key)">@round.RefCodeDesc</option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(round.Index.ToString().Trim(), key)">@round.RefCodeDesc</option>
+                            }
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <label class="display-6">Sort</label>
+                <select class="form-select form-select-lg mb-3" id="x_oth">
+                    @{
+
+
+                        foreach (var oth in Model.otherOptions)
+                        {
+
+                            var encryptedOth = localEncryption.ANEncrypt(oth.ToString(), key);
+                            var isSelectedOth = ViewBag.Oth == oth ? true : false;
+                            var displayTextOth = oth.ToString();
+
+                            <option value="@encryptedOth" selected="@isSelectedOth">@displayTextOth</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-3">
+                <label class="display-6">Region</label>
+                <select class="form-select form-select-lg mb-3" id="x_reg">
+                    @{
+                        foreach (var reg in Model.regionList)
+                        {
+
+                            if (ViewBag.RegionId == reg.RegionId)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(reg.RegionId.ToString(), key)">@reg.RegionName</option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(reg.RegionId.ToString(), key)">@reg.RegionName</option>
+                            }
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <label class="display-6">Category</label>
+                <select class="form-select form-select-lg mb-3" id="x_cat">
+                    @{
+                        foreach (var cat in Model.categoryList)
+                        {
+                            if (ViewBag.CategoryId == cat.CategoryId)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(cat.CategoryId.ToString(), key)">@cat.CategoryName</option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(cat.CategoryId.ToString(), key)">@cat.CategoryName</option>
+                            }
+
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <label class="display-6">Display</label>
+                <select class="form-select form-select-lg mb-3" id="x_top">
+                    @foreach (var opt in Model.topOptions)
+                    {
+                        var encryptedOpt = localEncryption.ANEncrypt(opt.ToString(), key);
+                        var isSelected = ViewBag.Top == opt ? true : false;
+                        var displayText = opt == 10000 ? "All" : $"Top {opt}";
+
+                        <option value="@encryptedOpt" selected="@isSelected">@displayText</option>
+                    }
+                </select>
+
+
+            </div>
+        </div>
+        <hr />
+        
+           
+            @{
+                if (Model.result_.Count < 1)
+                {
+                    //display No IMage in the selected filter
+                    <div class="jumbotron">
+                        <h1 class="display-4">No image under the selected filters.</h1>
+                       
+                    </div>
+                    
+                }
+                else
+                {
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-2">
+                        @foreach (var item in Model.result_)
+                        {
+                        
+                                <div class="col">
+                                    <div class="card shadow-md" style="border: solid @color" id="div_@item.HashPhotoId">
+                                        <a href="@item.ImageUrl"
+                                           class="glightbox"
+                                            data-title="Title: @item.PhotoTitle - Average Score: @item.AverageScore.ToString("0.00")" 
+                                            data-description="Description: @item.Description  <br /> Location: @item.Location <br /> Date Taken: @item.PhotoTaken"
+                                            id="imgAnchor">
+                                            <img width="100%"
+                                                 height="240"
+                                                 src="~/css/images/placeholder.png"
+                                                 data-src="@item.ImageUrl"
+                                                 class="lazy-load" 
+                                                 />
+                                        </a>
+                                        <div class="card-body" style="font-size: 10px;">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <strong style="font-size:20px;">
+                                                        Average Score:
+                                                    </strong>
+                                                    <strong style="font-size:20px;" id="@item.HashPhotoId">
+                                                        @item.AverageScore.ToString("0.00")
+
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                        }
+                    </div>
+                
+                }
+            }
+            
+        
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<script src="~/js/Rank/_rank_daily.js"></script>
+

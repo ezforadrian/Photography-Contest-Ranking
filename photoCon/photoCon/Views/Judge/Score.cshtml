@@ -1,0 +1,279 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+
+}
+
+
+
+
+
+<link rel="stylesheet" href="~/css/glightbox/glightbox.min.css">
+<script src="~/js/Glightbox/glightbox.min.js"></script>
+<link rel="stylesheet" href="~/css/judgeIndex.css" asp-append-version="true" />
+
+
+<div class="container-fluid main-body">
+    <div class="row align-items-start">
+
+
+
+        @foreach (var item in Model.judgeImageViews)
+        {
+
+
+            <div class="image col-10">
+                @{
+                    string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(item.PhotoMetaData_FileName);
+                    string cleanedFileName = System.Text.RegularExpressions.Regex.Replace(fileNameWithoutExtension, @"[^\w\s]", " ");
+                }
+                <div class="row align-items-center text-center">
+                    <div class="col-1">
+
+                        <button class="btn btn-outline-primary" id="prevBtn"
+                                style=" height: auto;
+                                        width:100%;
+                                        position:absolute;
+                                        top: 45%;
+                                        right: 0%;
+                                        left: 4%;
+                                        width: 5%;
+                                        height: 10%;">
+                            <i class="fa-solid fa-circle-left fa-4x "></i>
+                        </button>
+
+
+                    </div>
+
+
+                    <div class="col-10">
+                        <a href="@item.PhotoMetaData_ImageURL" class="glightbox" data-title="Title: @item.PhotoTitle" data-description="Description: @item.Description  <br /> Location: @item.Location <br /> Date Taken: @item.PhotoTaken" id="imgAnchor">
+                            <img id="imgURL" loading="preload" decoding="async" src="@item.PhotoMetaData_ImageURL" class="shadow-lg p-3 mb-5 bg-body-tertiary rounded" alt="@cleanedFileName" style="max-width: 90%; max-height: auto;">
+                        </a>
+                    </div>
+
+
+
+
+
+                    <div class="col-1">
+                        <button class="btn btn-outline-primary " id="nextBtn" style=" height: auto;
+                                        width:100%;
+                                        position:absolute;
+                                        top: 45%;
+                                        right: 0%;
+                                        left: 74%;
+                                        width: 5%;
+                                        height: 10%;">
+                            <i class="fa-solid fa-circle-right fa-4x"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="metadata col-2" style="font-size: 10px; ">
+                <div class="row text-left">
+                    REGION - CATEGORY
+                    <hr>
+                    <div class="col-12">
+                        <div class="input-group input-group-sm mb-3 spanclassMain">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">REGION</span>
+                            <input id="phoRegion" type="text" class="form-control col-6" value="@item.RegionName" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">CATEGORY</span>
+                            <input id="phoCategory" type="text" class="form-control col-6" value="@item.CategoryName" readonly>
+                        </div>
+                    </div>
+                    IMAGE DETAILS
+                    <hr>
+                    <div class="col-12">
+                        <div class="input-group input-group-sm mb-3 spanclassMain">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">DIMENSION</span>
+                            <input id="phoDimension" type="text" class="form-control col-6" value="@item.PhotoMetaData_Dimension" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">WIDTH</span>
+                            <input id="phoWidth" type="text" class="form-control col-6" value="@item.PhotoMetaData_Width" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass" style="margin-top: -16px;">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">HEIGHT</span>
+                            <input id="phoHeight" type="text" class="form-control col-6" value="@item.PhotoMetaData_Height" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">H-RESOLUTION</span>
+                            <input id="phoHorizontalResolution" type="text" class="form-control col-6" value="@item.PhotoMetaData_HorizontalResolution" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">V-RESOLUTION</span>
+                            <input id="phoVerticalResolution" type="text" class="form-control col-6" value="@item.PhotoMetaData_VerticalResolution" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">BIT DEPTH</span>
+                            <input id="phoBitDepth" type="text" class="form-control col-6" value="@item.PhotoMetaData_BitDepth" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">RESOLUTION UNIT</span>
+                            <input id="phoResolutionUnit" type="text" class="form-control col-6" value="@item.PhotoMetaData_ResolutionUnit" readonly>
+                        </div>
+                    </div>
+
+                    CAMERA DETAILS
+                    <hr>
+                    <div class="col-12">
+                        <div class="input-group input-group-sm mb-3 spanclassMain">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">CAMERA MAKER</span>
+                            <input id="phoCameraMaker" type="text" class="form-control col-6" value="@item.PhotoMetaData_CameraMaker" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">CAMERA MODEL</span>
+                            <input id="phoCameraModel" type="text" class="form-control col-6" value="@item.PhotoMetaData_CameraModel" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">F STOP</span>
+                            <input id="phoFStop" type="text" class="form-control col-6" value="@item.PhotoMetaData_FStop" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">EXPOSURE TIME</span>
+                            <input id="phoExposureTime" type="text" class="form-control col-6" value="@item.PhotoMetaData_ExposureTime" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">ISO SPEED</span>
+                            <input id="phoISOSpeed" type="text" class="form-control col-6" value="@item.PhotoMetaData_ISOSpeed" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">FOCAL LENGTH</span>
+                            <input id="phoFocalLength" type="text" class="form-control col-6" value="@item.PhotoMetaData_FocalLength" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">MAX APERTURE</span>
+                            <input id="phoMaxAperture" type="text" class="form-control col-6" value="@item.PhotoMetaData_MaxAperture" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">METERING MODE</span>
+                            <input id="phoMeteringMode" type="text" class="form-control col-6" value="@item.PhotoMetaData_MeteringMode" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">FLASH MODE</span>
+                            <input id="phoFlashMode" type="text" class="form-control col-6" value="@item.PhotoMetaData_FlashMode" readonly>
+                        </div>
+                        <div class="input-group input-group-sm mb-3 spanclass">
+                            <span class="input-group-text col-6" id="inputGroup-sizing-sm">MM FOCAL LENGTH</span>
+                            <input id="phoMmFocalLength" type="text" class="form-control col-6" value="@item.PhotoMetaData_MmFocalLength" readonly>
+                        </div>
+                    </div>
+                    Image Number 
+                    <hr>
+                    <h5 class="text-center"><strong id="currentCount_">@item.ImageBatch_Sort</strong> out of <strong id="totalCount_">@ViewBag.TotalCount</strong></h5>
+                    
+                    JUDGE SCORE
+                    <hr>
+                    <form id="scoresheet">
+                        @Html.AntiForgeryToken()
+                        @*hidden input fields*@
+                        <input id="rowNumber" type="hidden" value="@item.ImageBatch_Sort" readonly />
+                        <input id="totalCount" type="hidden" value="@ViewBag.TotalCount" readonly />
+                        <input id="xcat" type="hidden" value="@ViewBag.xcat" readonly />
+                        <input id="xnum" type="hidden" value="@ViewBag.xnum" readonly />
+                        <input id="xround" type="hidden" value="@ViewBag.round" readonly />
+                        <input id="photoIdx" type="hidden" value="@item.ImageBatch_ImageHashId" readonly />
+                        <input id="VphotoIdx" type="hidden" value="@localEncryption.ANEncrypt(item.ImageBatch_Sort.ToString(), key)" readonly />
+
+                        <div class="input-group mb-3 spanclassMain">
+
+
+                            @{
+                                if (Model.judgeScores != null && Model.judgeScores.Count > 0)
+                                {
+                                    foreach (var item_ in Model.judgeScores)
+                                    {
+                                        <input class="form-control form-control-lg font-weight-bold"
+                                               id="judgeScore_"
+                                               type="number"
+                                               min="0"
+                                               max="10"
+                                               step="0.10"
+                                               value="@item_.Score"
+                                               readonly>
+
+                                        <button class="btn btn-primary" type="button" id="lockscoreBtn">Unlock</button>
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    <input class="form-control form-control-lg font-weight-bold"
+                                           id="judgeScore_"
+                                           type="number"
+                                           min="0"
+                                           max="10"
+                                           step="0.10"
+                                           value="0.00">
+
+                                    <button class="btn btn-primary" type="button" id="lockscoreBtn">Submit</button>
+
+                                }
+
+
+                            }
+
+
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        }
+
+
+    </div>
+
+</div>
+<!-- Modal HTML -->
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                <!-- Error messages will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Fullscreen Image Modal -->
+<div class="modal fade" id="fullscreenImageModal" tabindex="-1" aria-labelledby="fullscreenImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img loading="preload" decoding="async" id="fullsizeImage" src="" alt="Fullsize Image" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- CSRF token input -->
+<input type="hidden" id="csrf-token" value="@ViewData["CSRFToken"]">
+<script src="~/js/Judge/_judgescore.js?v1r1.1"></script>
+

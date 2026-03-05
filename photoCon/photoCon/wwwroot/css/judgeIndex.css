@@ -1,0 +1,32 @@
+﻿#inputGroup-sizing-sm {
+    background-color: white;
+    font-size: 11px;
+}
+
+.spanclass {
+    margin-top: -16px !important;
+}
+
+.spanclassMain {
+    margin-top: -5px !important;
+}
+
+#phoDimension, #phoWidth, #phoHeight, #phoHorizontalResolution #phoVerticalResolution, #phoBitDepth, #phoResolutionUnit,
+#phoCameraMaker, #phoCameraModel, #phoFStop, #phoExposureTime,
+#phoISOSpeed, #phoFocalLength, #phoMaxAperture, #phoMeteringMode,
+#phoFlashMode, #phoMmFocalLength {
+    font-size: 11px !important;
+}
+
+#prevBtn, #nextBtn {
+    border: none;
+}
+
+.gbtn.next, .gbtn.prev {
+    display: none !important;
+}
+
+/* Hide the next and prev arrows */
+.glightbox-arrows {
+    display: none !important;
+}

@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PPSS</title>
+    <link rel="shortcut icon" href="https://www.pagcor.ph/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/photoCon.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/homeLogin.css" asp-append-version="true" />
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/c84a207f25.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault()); //right click
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+    
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   
+</body>
+</html>

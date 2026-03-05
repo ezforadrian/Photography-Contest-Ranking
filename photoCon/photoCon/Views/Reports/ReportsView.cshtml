@@ -1,0 +1,13 @@
+﻿@model vm_ReportParameters_Selection
+@{
+    Layout = "_LayoutWithoutMenu";
+}
+
+<style>
+    html, body, div, main{ 
+        height: 100%;
+    }
+</style>
+<div>
+    <object id='pdfbox' class="col-12" style="height:100%;" type="application/pdf" data="@Url.Action("ViewPDF", Model)"></object>
+</div>

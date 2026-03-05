@@ -1,0 +1,82 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+@model vm_DisplayReportParameters
+
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+
+}
+<script src="~/lib/jquery/dist/datatables.min.js"></script>
+<div class="container-fluid" style="height:100%;">
+    <div class="row col-8" style="height:100%;">
+        <div class="col-6">
+            <form id="reportData">
+                @Html.AntiForgeryToken()
+                <div class="input-group m-2">
+                    <label class="col-4">Ranking/Screening: </label>
+                    <select id="fieldSelect" name="fieldSelect" class="form-select col-auto">
+                        <option value="0">Regional</option>
+                        <option value="1">Grand Final</option>
+                    </select>
+                </div>
+                <div class="input-group m-2" id="fieldGrpRegion">
+                    <label class="col-4">Region: </label>
+                    <select id="fieldRegion" name="fieldRegion" class="form-select col-auto">
+                        @foreach (var item in Model.GetRegionsList)
+                        {
+                            <option value="@localEncryption.ANEncrypt(@item.RegionId.ToString(), key)">@item.RegionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="input-group m-2" id="fieldGrpRound">
+                    <label class="col-4">Round: </label>
+                    <select id="fieldRound" name="fieldRound" class="form-select col-auto">
+                        @foreach (var item in Model.GetRoundsList)
+                        {
+                            <option value="@localEncryption.ANEncrypt((@item.RefTypeID + @item.RefCodeID).ToString(), key)">@item.RefCodeDesc</option>
+                        }
+                    </select>
+                </div>
+                <div class="input-group m-2">
+                    <label class="col-4">Category: </label>
+                    <select id="fieldCategory" name="fieldCategory" class="form-select col-auto">
+                        @foreach (var item in Model.GetCategoriesList)
+                        {
+                            <option value="@localEncryption.ANEncrypt(@item.CategoryId.ToString(), key)">@item.CategoryName</option>
+                        }
+                        <option value="@localEncryption.ANEncrypt("0", key)">All</option>
+                    </select>
+                </div>
+                @* <div class="input-group m-2">
+                    <label class="col-4">Report: </label>
+                    <select id="fieldReportType" name="" class="form-select col-auto">
+                        @foreach (var item in Model.GetReportNameList)
+                        {
+                            <option value="@localEncryption.ANEncrypt(@item.RefCodeID.ToString(), key)">@item.RefCodeDesc</option>
+                        }
+                    </select>
+                </div> *@
+                <div class="input-group m-2">
+                    <label class="col-4">Report: </label>
+                    <select id="fieldReportType" name="" class="form-select col-auto">
+                        <option value="@localEncryption.ANEncrypt("01", key)">Official</option>
+                        <option value="@localEncryption.ANEncrypt("03", key)">Internal</option>
+                    </select>
+                </div>
+                <div class="input-group m-2" id="fieldGrpTopSelect">
+                    <label class="col-4">Rank Count: </label>
+                    <input type="number" id="fieldTopSelect" name="" class="form-control col-auto">
+                </div>
+            </form>
+        </div>
+        <div>
+            <input type="button" id="testbutton" value="View Report">
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/Report/_reports_index.js?v1"></script>

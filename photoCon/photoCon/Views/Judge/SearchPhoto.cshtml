@@ -1,0 +1,143 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+    var color = "black";
+
+}
+<link rel="stylesheet" href="~/css/rankOverall.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/glightbox/glightbox.min.css">
+<script src="~/js/Glightbox/glightbox.min.js"></script>
+<style>
+    #searchResults .photo-result {
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+        #searchResults .photo-result img {
+            max-width: 400px;
+            margin-right: 10px;
+        }
+
+        #searchResults .photo-result .photo-details {
+            flex: 1;
+        }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <label class="display-6">Search Photo by Title:</label>
+        <hr />
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form autocomplete="off">
+                    @Html.AntiForgeryToken()
+                    <div class="input-group input-group-lg col-5">
+                        <input type="hidden" id="xRound" value="@ViewBag.Round" />
+                        <input type="text" class="form-control col-5" id="inpSearchKey" placeholder="Enter Photo Title" required>
+                        <button class="btn btn-danger" type="button" id="btnSearch"> <i class="fa-solid fa-magnifying-glass"></i>&nbsp; Search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div id="searchResults"></div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="imageFullModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageFullModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="imageFullModalLabel"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    @* <div class="col-2"></div> *@
+                    <div class="col-12">
+                        <center>
+                            <a href=""
+                               class="glightbox"
+                               data-title=""
+                               data-description=""
+                               id="imgAnchor">
+
+                                <img loading="preload"
+                                     decoding="async"
+                                     width="70%"
+                                     height="auto"
+                                     src="~/css/images/placeholder.png"
+                                     id="ImageModal" />
+                            </a>
+                        </center>
+                    </div>
+                </div>
+
+
+                <div class="card-body" style="font-size: 10px;">
+                    <div class="row">
+                        @* <div class="col-3"></div> *@
+                        <div class="col-3">
+                        </div>
+                        <div class="col-6">
+                            <form id="scoresheetDaily">
+                                @Html.AntiForgeryToken()
+                                <input id="photoIdxModal" type="hidden" readonly />
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text fw-bold" style="font-size:18px;">My Score: </span>
+                                    <input class="form-control fw-bold"
+                                           id="judgeScoreModal"
+                                           type="number"
+                                           min="0"
+                                           max="10"
+                                           step="0.10" />
+                                    <button class="input-group-text btn btn-primary" type="button" id="lockscoreBtn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                <!-- Error messages will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Judge/_searchphoto.js?v1r1.4"></script>

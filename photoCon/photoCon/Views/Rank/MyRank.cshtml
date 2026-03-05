@@ -1,0 +1,247 @@
+﻿@using System;
+@using System.Globalization;
+@using photoCon.Dto;
+@using photoCon.Helper;
+
+@{
+    LocalEncryption localEncryption = new LocalEncryption();
+    const string key = "thequickbrownfox";
+    var color = "black";
+
+}
+<link rel="stylesheet" href="~/css/rankOverall.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/glightbox/glightbox.min.css">
+<script src="~/js/Glightbox/glightbox.min.js"></script>
+
+<div class="album py-3">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                
+                <label class="display-6">Region</label>
+                <select class="form-select form-select-lg mb-3" id="x_reg">
+                    @{
+                        foreach (var reg in Model.regionList)
+                        {
+
+                            if (ViewBag.RegionId == reg.GenId)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(reg.GenId.ToString(), key)">@reg.GenName</option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(reg.GenId.ToString(), key)">@reg.GenName</option>
+                            }
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-3">
+                <label class="display-6">Category</label>
+                <select class="form-select form-select-lg mb-3" id="x_cat">
+                    @{
+                        foreach (var cat in Model.categoryList)
+                        {
+                            if (ViewBag.CategoryId == cat.GenId)
+                            {
+                                <option selected value="@localEncryption.ANEncrypt(cat.GenId.ToString(), key)">@cat.GenName</option>
+                            }
+                            else
+                            {
+                                <option value="@localEncryption.ANEncrypt(cat.GenId.ToString(), key)">@cat.GenName</option>
+                            }
+
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-3">
+                <label class="display-6">Sort</label>
+                <select class="form-select form-select-lg mb-3" id="x_oth">
+                    @{
+
+
+                        foreach (var oth in Model.otherOptions)
+                        {
+
+                            var encryptedOth = localEncryption.ANEncrypt(oth.ToString(), key);
+                            var isSelectedOth = ViewBag.Oth == oth ? true : false;
+                            var displayTextOth = oth.ToString();
+
+                            <option value="@encryptedOth" selected="@isSelectedOth">@displayTextOth</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-3">
+                <label class="display-6">Display</label>
+                <select class="form-select form-select-lg mb-3" id="x_top">
+                    @foreach (var opt in Model.topOptions)
+                    {
+                        var encryptedOpt = localEncryption.ANEncrypt(opt.ToString(), key);
+                        var isSelected = ViewBag.Top == opt ? true : false;
+                        var displayText = opt == 10000 ? "All" : $"Top {opt}";
+
+                        <option value="@encryptedOpt" selected="@isSelected">@displayText</option>
+                    }
+                </select>
+
+
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-5">
+            @foreach (var item in Model.result_)
+            {
+                color = item.MyScore == 0.00m ? "red" : "black";
+                var encodedTitle = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(item.PhotoTitle);
+                var encodedLocation = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(item.Location);
+                var encodedDescription = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(item.Description);
+
+
+                <div class="col">
+                    <div class="card shadow-md" style="border: solid @color" id="div_@item.HashPhotoId">
+                        <img width="100%"
+                             height="240"
+                             src="~/css/images/placeholder.png"
+                             data-src="@item.ImageUrl"
+                             class="lazy-load"
+                             onclick="openModalFS('@item.HashPhotoId', '@ViewBag.Round')" />
+                        <div class="spinner"></div> <!-- Loading spinner -->
+                        <div class="card-body" style="font-size: 10px;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong style="font-size:23px;">
+                                        My Score:
+                                    </strong>
+                                    <strong style="font-size:23px; color: @color" id="@item.HashPhotoId">
+                                        @item.MyScore
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong style="font-size:18px;" id="imgRegionName">
+                                        @item.RegionName
+                                    </strong>
+                                </div>
+                                <div class="col-6">
+                                    <strong style="font-size:18px;" id="imgCategoryName">
+                                        @item.CategoryName
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="imageFullModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageFullModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="imageFullModalLabel"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    @* <div class="col-2"></div> *@
+                    <div class="col-12">
+                        <center>
+                            <a 
+                                href="" 
+                                class="glightbox" 
+                                data-title="" 
+                                data-description="" 
+                                id="imgAnchor">
+
+                             <img 
+                                 loading="preload" 
+                                 decoding="async"
+                                 width="70%"
+                                 height="auto"
+                                 src="~/css/images/placeholder.png"
+                                 id="ImageModal" />
+                            </a>
+                        </center>
+                    </div>
+                </div>
+
+
+                <div class="card-body" style="font-size: 10px;">
+                    <div class="row">
+                        @* <div class="col-3"></div> *@
+                        <div class="col-3">
+
+                        </div>
+                        <div class="col-6">
+                            <form id="scoresheetDaily">
+                                @Html.AntiForgeryToken()
+                                <input id="photoIdxModal" type="hidden" readonly />
+                                <input id="xRound" type="hidden" readonly />
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text fw-bold" style="font-size:18px;">My Score: </span>
+                                    <input class="form-control fw-bold"
+                                           id="judgeScoreModal"
+                                           type="number"
+                                           min="0"
+                                           max="10"
+                                           step="0.10" />
+                                    <button class="input-group-text btn btn-primary" type="button" id="lockscoreBtn">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                <!-- Error messages will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="~/js/Rank/_rank_myrank.js?v1r1.4"></script>
+

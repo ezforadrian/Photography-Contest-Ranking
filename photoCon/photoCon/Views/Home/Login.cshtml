@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "_LayoutWithoutMenu";
+}
+<section>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="~/css/images/logo2024.png"
+                     class="img-fluid rounded" alt="PAGCOR PHOTOGRAPHY CONTEST"
+                     style="width: 100%; margin-top: 10%;">
+            </div>
+            <div class="col-md-9 col-lg-7 col-xl-4">
+                <center>
+                <img src="~/css/images/PPSS_login3.png"
+                     class="img-fluid rounded " alt="PAGCOR PHOTOGRAPHY SCORING SYSTEM"
+                     style="width: 85%; margin-top: 10%;">
+                </center>
+                <form id="loginForm" autocomplete="off">
+                    @Html.AntiForgeryToken()
+
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0">SIGN IN</p>
+
+                    </div>
+
+
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" id="username_" class="form-control form-control-lg"
+                               placeholder="Enter Username" required />
+                        <label class="form-label" for="username_">Username</label>
+                    </div>
+
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <input type="password" id="password_" class="form-control form-control-lg"
+                               placeholder="Enter password" required />
+                        <label class="form-label" for="password_">Password</label>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Login
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal HTML -->
+<div id="errorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalTitle">Error</h5> <!-- Update this line -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorModalMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="~/js/Home/_homelogin.js"></script>
